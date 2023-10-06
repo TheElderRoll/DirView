@@ -15,14 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
   homeDir = QDir::homePath();
   ui->treeFileView->setRootIndex(model.index(homeDir));
   model.setNameFilterDisables(
-      false); // --- переместить сюда, т.к. работает не только для фильтров
-              // текста, но и для QDir::NoDotAndDotDot
+      false);
   ui->treeFileView->setRootIndex(model.index(homeDir));
   ui->lineEdit->setPlaceholderText("Фильтр поиска");
   ui->checkBox->setChecked(
-      true); // --  активация тоггла, заодно фиксит не работающий фильтр по
-             // имени, если он был произведен до setFilter в
-             // on_checkBox_stateChanged
+      true);
   ui->treeFileView->setSelectionMode(QAbstractItemView::SingleSelection);
   const auto header = ui->treeFileView->header();
   header->setSectionResizeMode(0, QHeaderView::Stretch);
@@ -41,13 +38,11 @@ void MainWindow::on_termButton_clicked() {
   QFileInfo fi(selectedPath);
   if (!fi.exists()) {
     return;
-    // какую нить ошибку еще вывести
   }
   if (fi.isFile()) {
     selectedPath = fi.absolutePath();
   }
   std::unique_ptr<QProcess> proc(new QProcess());
-  //  по хорошему вместо konsole должно быть $TERM, но у меня не заработало
   const auto term =
         QProcessEnvironment::systemEnvironment().value("TERM", "xterm");
     proc->startDetached(term, {}, selectedPath, nullptr);
@@ -58,12 +53,12 @@ void MainWindow::on_submitButton_clicked() {
   QString filter = ui->lineEdit->text();
 
   if (filter.count() != 0) {
-    QStringList filterList; // поменять на объект
+    QStringList filterList;
     filterList.append(filter);
     model.setNameFilters(filterList);
   } else {
     model.setNameFilters(
-        {}); // присвоить нулевой фильтр, тем самым отключить его
+        {});
   }
 }
 
