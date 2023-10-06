@@ -21,6 +21,8 @@ private slots:
 
     void on_checkBox_stateChanged(int arg1);
 
+    void on_termButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel model;
